@@ -1,7 +1,4 @@
-//Eventually have you just pass in a summary true false boolean variable to determine which method to apply
-//We can make both the generatetext and summary methods private
-//Have one public method that decides
-
+//Make it eventually have two constructors and either pass in 3 or 5 arguments 3 would be generate 5 wouold be the summary witht the options
 import axios, { AxiosResponse } from "axios";
 
 interface Generation {
@@ -62,11 +59,39 @@ export class Cohere {
       });
   }
 
+  // Model settings
+  settings = {
+    model: "summarize-xlarge",
+    length: "medium",
+    extractiveness: "medium",
+  };
   //Summarize the text (Greater than 250 characters)
-  private summarize() {}
+  private async summarize() {
+    try {
+      const response = await axios.post(
+        //Make sure this is indeed the correct url chatgpt generated it
+        "https://api.cohere.ai/summarize",
+        {
+          text: this.text,
+          ...this.settings,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
+      const summary = response.data.summary;
+      console.log(summary);
+    } catch (error) {
+      console.error("Error summarizing the text:", error);
+    }
+  }
   public main() {
     if (this.summary) {
+      this.summarize();
     } else {
       this.generateText();
     }
