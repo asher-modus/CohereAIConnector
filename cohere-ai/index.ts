@@ -41,7 +41,7 @@ export class Cohere {
     };
   }
 
-  public fetchData() {
+  public generateText() {
     axios
       .request<CohereResponse>(this.options)
       .then((response: AxiosResponse<CohereResponse>) => {
