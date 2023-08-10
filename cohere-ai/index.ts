@@ -1,3 +1,7 @@
+//Eventually have you just pass in a summary true false boolean variable to determine which method to apply
+//We can make both the generatetext and summary methods private
+//Have one public method that decides
+
 import axios, { AxiosResponse } from "axios";
 
 interface Generation {
@@ -18,9 +22,13 @@ interface CohereResponse {
 
 export class Cohere {
   private apiKey: string;
+  private text: string;
+  private summary: boolean;
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string, text: string, summary: boolean) {
     this.apiKey = apiKey;
+    this.text = text;
+    this.summary = summary;
   }
 
   get options() {
@@ -36,12 +44,13 @@ export class Cohere {
         max_tokens: 20,
         return_likelihoods: "NONE",
         truncate: "END",
-        prompt: "Please explain to me how LLMs work",
+        prompt: this.text,
       },
     };
   }
 
-  public generateText() {
+  //Generate text
+  private generateText() {
     axios
       .request<CohereResponse>(this.options)
       .then((response: AxiosResponse<CohereResponse>) => {
@@ -51,5 +60,15 @@ export class Cohere {
       .catch((error: any) => {
         console.error(error);
       });
+  }
+
+  //Summarize the text (Greater than 250 characters)
+  private summarize() {}
+
+  public main() {
+    if (this.summary) {
+    } else {
+      this.generateText();
+    }
   }
 }
