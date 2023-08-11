@@ -5,16 +5,14 @@ import axios, { AxiosResponse } from "axios";
 // Cohere class definition
 export class Cohere {
   private apiKey: string;
-  private text: string;
 
   // Constructor for the Cohere class
-  constructor(apiKey: string, text: string) {
+  constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this.text = text;
   }
 
   // Method to generate text
-  public generateText() {
+  public generateText(text: string) {
     const options = {
       method: "POST",
       url: "https://api.cohere.ai/v1/generate",
@@ -25,10 +23,10 @@ export class Cohere {
       },
       data: {
         //This has a big impact the truncating and max_tokens
-        max_tokens: 50,
+        max_tokens: 1000,
         return_likelihoods: "NONE",
         truncate: "END",
-        prompt: this.text,
+        prompt: text,
       },
     };
 
@@ -47,7 +45,8 @@ export class Cohere {
   public summarize(
     model: string = "summarize-xlarge",
     length: string = "medium",
-    extractiveness: string = "medium"
+    extractiveness: string = "medium",
+    text: string
   ) {
     const options = {
       method: "POST",
@@ -57,7 +56,7 @@ export class Cohere {
         "Content-Type": "application/json",
       },
       data: {
-        text: this.text,
+        text: text,
         model,
         length,
         extractiveness,
