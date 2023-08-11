@@ -22,6 +22,7 @@ export class Cohere {
         authorization: `Bearer ${this.apiKey}`,
       },
       data: {
+        //This has a big impact the truncating and max_tokens
         max_tokens: 50,
         return_likelihoods: "NONE",
         truncate: "END",
