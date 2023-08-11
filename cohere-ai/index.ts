@@ -13,6 +13,9 @@ export class Cohere {
 
   // Method to generate text
   public generateText(text: string) {
+    if (text.trim().length === 0) {
+      throw new Error("Empty string input");
+    }
     const options = {
       method: "POST",
       url: "https://api.cohere.ai/v1/generate",
