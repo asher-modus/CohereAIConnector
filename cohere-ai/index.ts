@@ -1,3 +1,7 @@
+//One important thing is that on older commits I had interfaces for response objects
+//It slowed me down and I already have error handling so I didn't really get point
+//If it is important I'm more than happy to refer back
+
 import axios, { AxiosResponse } from "axios";
 
 // Cohere class definition
