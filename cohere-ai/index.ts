@@ -1,22 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 
-// Interfaces
-interface Generation {
-  id: string;
-  text: string;
-}
-
-interface CohereResponse {
-  id: string;
-  generations: Generation[];
-  prompt: string;
-  meta: {
-    api_version: {
-      version: string;
-    };
-  };
-}
-
 // Cohere class definition
 export class Cohere {
   private apiKey: string;
@@ -47,8 +30,8 @@ export class Cohere {
     };
 
     axios
-      .request<CohereResponse>(options)
-      .then((response: AxiosResponse<CohereResponse>) => {
+      .request(options)
+      .then((response: AxiosResponse) => {
         const generatedText = response.data.generations[0].text;
         console.log(generatedText);
       })
@@ -80,7 +63,7 @@ export class Cohere {
 
     axios
       .request(options)
-      .then((response: AxiosResponse<any>) => {
+      .then((response: AxiosResponse) => {
         const summary = response.data.summary;
         console.log(summary);
       })
