@@ -51,6 +51,9 @@ export class Cohere {
     extractiveness: string = "medium",
     text: string
   ) {
+    if (text.trim().length === 0) {
+      throw new Error("Empty string input");
+    }
     const options = {
       method: "POST",
       url: "https://api.cohere.ai/summarize",
