@@ -8,3 +8,9 @@ const testPrompt: string =
 cohere.generateText(testPrompt);
 cohere.summarize("summarize-xlarge", "medium", "medium", testPrompt);
 //cohere.summarize()
+//spanish testing!
+const spanishPrompt: string = "¿Quién es el conejito malo?";
+//Spanish Prompt: Who is bad bunny?
+cohere.generateText(spanishPrompt);
+cohere.generateText(spanishPrompt + " respond in Spanish");
+cohere.generateText(spanishPrompt + "responder en español");
