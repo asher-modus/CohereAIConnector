@@ -20,12 +20,10 @@ interface CohereResponse {
 export class Cohere {
   private apiKey: string;
   private text: string;
-  private summary: boolean;
 
-  constructor(apiKey: string, text: string, summary: boolean) {
+  constructor(apiKey: string, text: string) {
     this.apiKey = apiKey;
     this.text = text;
-    this.summary = summary;
   }
 
   get options() {
@@ -38,8 +36,10 @@ export class Cohere {
         authorization: `Bearer ${this.apiKey}`,
       },
       data: {
-        max_tokens: 20,
+        //This right here is pretty important
+        max_tokens: 50,
         return_likelihoods: "NONE",
+        //It does truncate it so tell me if you would rather it throw an error?
         truncate: "END",
         prompt: this.text,
       },
@@ -47,7 +47,7 @@ export class Cohere {
   }
 
   //Generate text
-  private generateText() {
+  public generateText() {
     axios
       .request<CohereResponse>(this.options)
       .then((response: AxiosResponse<CohereResponse>) => {
@@ -59,21 +59,21 @@ export class Cohere {
       });
   }
 
-  // Model settings
-  settings = {
-    model: "summarize-xlarge",
-    length: "medium",
-    extractiveness: "medium",
-  };
   //Summarize the text (Greater than 250 characters)
-  private async summarize() {
+  public async summarize(
+    model: string = "summarize-xlarge",
+    length: string = "medium",
+    extractiveness: string = "medium"
+  ) {
     try {
       const response = await axios.post(
         //Make sure this is indeed the correct url chatgpt generated it
         "https://api.cohere.ai/summarize",
         {
           text: this.text,
-          ...this.settings,
+          model: model,
+          length: length,
+          extractiveness: extractiveness,
         },
         {
           headers: {
@@ -87,13 +87,6 @@ export class Cohere {
       console.log(summary);
     } catch (error) {
       console.error("Error summarizing the text:", error);
-    }
-  }
-  public main() {
-    if (this.summary) {
-      this.summarize();
-    } else {
-      this.generateText();
     }
   }
 }
